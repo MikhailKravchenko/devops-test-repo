@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    container_name: devops-test-web
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    environment:
+      # Оставляем значения по умолчанию из config.php,
+      # но задаём их также как переменные окружения на будущее.
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: test_zadanie
+      DB_USER: root
+      DB_PASS: root
+
+  db:
+    image: mysql:8.0
+    container_name: devops-test-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test_zadanie
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./database:/docker-entrypoint-initdb.d
+
+volumes:
+  db_data:
+

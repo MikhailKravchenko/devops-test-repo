@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devops-test-repo
+  labels:
+    app: devops-test-repo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: devops-test-repo
+  template:
+    metadata:
+      labels:
+        app: devops-test-repo
+    spec:
+      containers:
+        - name: web
+          # Образ будет переопределяться в CI через kubectl set image
+          image: registry.example.com/devops/devops-test-repo:latest
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: devops-test-config
+            - secretRef:
+                name: devops-test-db
+
+

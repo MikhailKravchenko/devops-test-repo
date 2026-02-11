@@ -1,0 +1,17 @@
+{{- if .Values.mysql.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+  labels:
+    app: devops-test-db
+spec:
+  selector:
+    app: devops-test-db
+  ports:
+    - name: mysql
+      port: {{ .Values.mysql.port }}
+      targetPort: {{ .Values.mysql.port }}
+  type: ClusterIP
+{{- end }}
+

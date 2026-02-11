@@ -1,0 +1,36 @@
+replicaCount: 1
+
+image:
+  repository: registry.example.com/devops/devops-test-repo
+  tag: ""
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  className: nginx
+  hosts:
+    - host: devops-test.local
+      paths:
+        - path: /
+          pathType: Prefix
+
+resources: {}
+
+db:
+  host: db
+  port: 3306
+  name: test_zadanie
+  user: root
+  password: root
+
+mysql:
+  enabled: true
+  image: mysql:8.0
+  rootPassword: root
+  database: test_zadanie
+  port: 3306
+
