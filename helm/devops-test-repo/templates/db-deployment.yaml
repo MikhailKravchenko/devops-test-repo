@@ -1,0 +1,35 @@
+{{- if .Values.mysql.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devops-test-db
+  labels:
+    app: devops-test-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: devops-test-db
+  template:
+    metadata:
+      labels:
+        app: devops-test-db
+    spec:
+      containers:
+        - name: mysql
+          image: {{ .Values.mysql.image | quote }}
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: {{ .Values.mysql.rootPassword | quote }}
+            - name: MYSQL_DATABASE
+              value: {{ .Values.mysql.database | quote }}
+          ports:
+            - containerPort: {{ .Values.mysql.port }}
+          volumeMounts:
+            - name: db-data
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: db-data
+          emptyDir: {}
+{{- end }}
+
